@@ -6,6 +6,7 @@ const configSchema = z.object({
   BOT_CLIENT_ID: z.string(),
   GUILD_ID: z.string(),
   OPENAI_TOKEN: z.string(),
+  DB_URL: z.string(),
 });
 
 export const config = configSchema.parse(process.env);
