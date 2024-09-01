@@ -19,12 +19,14 @@ export const mentionHandler = async (message: Message) => {
   const content = rawContent.replace(regex, "").trim();
   logger.info(`mentionHandler actual content: ${content}`);
 
-  const relevantTexts = await getRelevantText(content, 1);
+  const relevantTexts = await getRelevantText(content, 10);
   const chatMessages = buildConversation([...relevantTexts]);
   chatMessages.push({
     role: "user",
     content: content,
   });
+
+  logger.info(`mentionHandler chatMessages: ${JSON.stringify(chatMessages)}`);
 
   const reply = await llm.completeChat(chatMessages);
   await message.channel.send(reply);
