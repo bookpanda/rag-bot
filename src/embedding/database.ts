@@ -16,8 +16,8 @@ class Database {
     this.client.query(`
         CREATE TABLE IF NOT EXISTS embedding (
         id SERIAL PRIMARY KEY,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        expires_at TIMESTAMP,
+        created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+        expires_at TIMESTAMPTZ,
         text TEXT NOT NULL,
         source TEXT NOT NULL,
         vector vector(1536) NOT NULL
@@ -30,7 +30,6 @@ class Database {
       const expiry = new Date(
         new Date().getTime() + config.MSG_EXPIRY_SEC * 1000
       );
-      expiry.setDate(expiry.getDate() + 7);
 
       const response = await this.client.query(query, [
         embedding.text,
