@@ -5,13 +5,15 @@ import { database } from "./database";
 
 export const saveText = async (
   text: string,
-  source: string
+  source: string,
+  guildID: string
 ): Promise<number> => {
   const vector = await llm.embed(text);
   const embedding: TextEmbedding = {
     text,
     source,
     vector,
+    guildID,
   };
 
   const embedID = await database.saveEmbedding(embedding);
@@ -20,6 +22,7 @@ export const saveText = async (
 
 export const getRelevantText = async (
   text: string,
+  guildID: string,
   limit: number = 1
 ): Promise<TextEmbedding[]> => {
   const vector = await llm.embed(text);
@@ -32,7 +35,8 @@ export const getRelevantText = async (
   const similarTexts = await database.getSimilar(
     embedding,
     limit,
-    config.MAX_EMBED_DIST
+    config.MAX_EMBED_DIST,
+    guildID
   );
   return similarTexts;
 };

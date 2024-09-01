@@ -7,6 +7,7 @@ import { TextEmbedding } from "../../models";
 
 export const mentionHandler = async (message: Message) => {
   logger.info(`mentionHandler: ${message.content}`);
+  if (!message.guildId) return;
 
   if (
     message.content.includes("@here") ||
@@ -19,7 +20,7 @@ export const mentionHandler = async (message: Message) => {
   const content = rawContent.replace(regex, "").trim();
   logger.info(`mentionHandler actual content: ${content}`);
 
-  const relevantTexts = await getRelevantText(content, 10);
+  const relevantTexts = await getRelevantText(content, message.guildId, 10);
   const chatMessages = buildConversation([...relevantTexts]);
   chatMessages.push({
     role: "user",
