@@ -1,4 +1,5 @@
 import { OpenAI } from "openai";
+import { ChatCompletionMessageParam } from "openai/resources";
 import { config } from "../config/config";
 import { logger } from "../logger/logger";
 
@@ -25,11 +26,13 @@ class LLM {
     }
   }
 
-  async completeChat(prompt: string): Promise<string> {
+  async completeChat(
+    chatMessages: ChatCompletionMessageParam[]
+  ): Promise<string> {
     try {
       const response = await this.openai.chat.completions.create({
         model: this.chatCompletionModel,
-        messages: [{ role: "user", content: prompt }],
+        messages: chatMessages,
       });
 
       return response.choices[0].message.content || "";
