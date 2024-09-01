@@ -1,3 +1,4 @@
+import { config } from "../config/config";
 import { llm } from "../llm";
 import { TextEmbedding } from "../models";
 import { database } from "./database";
@@ -28,6 +29,10 @@ export const getRelevantText = async (
     vector,
   };
 
-  const similarTexts = await database.getSimilar(embedding, limit);
+  const similarTexts = await database.getSimilar(
+    embedding,
+    limit,
+    config.MAX_EMBED_DIST
+  );
   return similarTexts;
 };
