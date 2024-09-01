@@ -1,6 +1,9 @@
 import { Message } from "discord.js";
+import { ChatCompletionMessageParam } from "openai/resources";
+import { getRelevantText } from "../../embedding/service";
 import { llm } from "../../llm";
 import { logger } from "../../logger/logger";
+import { TextEmbedding } from "../../models";
 
 export const mentionHandler = async (message: Message) => {
   logger.info(`mentionHandler: ${message.content}`);
@@ -16,6 +19,24 @@ export const mentionHandler = async (message: Message) => {
   const content = rawContent.replace(regex, "").trim();
   logger.info(`mentionHandler actual content: ${content}`);
 
-  const reply = await llm.completeChat(content);
+  const relevantTexts = await getRelevantText(content, 1);
+  const chatMessages = buildConversation([...relevantTexts]);
+  chatMessages.push({
+    role: "user",
+    content: content,
+  });
+
+  const reply = await llm.completeChat(chatMessages);
   await message.channel.send(reply);
+};
+
+const buildConversation = (
+  messages: TextEmbedding[]
+): ChatCompletionMessageParam[] => {
+  return messages.map((message) => {
+    return {
+      role: message.source === "RAG-bot" ? "assistant" : "user",
+      content: message.text,
+    };
+  });
 };
