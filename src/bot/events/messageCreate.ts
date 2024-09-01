@@ -17,8 +17,6 @@ export const execute = async (message: Message) => {
   //   return;
   // }
 
-  if (!message.author.bot) {
-    logger.info(`Saving text from ${message.author.tag}`);
-    await saveText(message.content, message.author.id);
-  }
+  logger.info(`Saving text from ${message.author.tag}`);
+  await saveText(message.content, message.author.displayName);
 };
