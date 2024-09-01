@@ -7,6 +7,9 @@ services:
     restart: unless-stopped
     environment:
       - NODE_ENV=production
+      - DB_URL=postgresql://root:1234@localhost:5432/db
+      - MSG_EXPIRY_SEC=604800
+      - MAX_EMBED_DIST=1
       - BOT_TOKEN=${BOT_TOKEN}
       - BOT_CLIENT_ID=${BOT_CLIENT_ID}
       - GUILD_ID=${GUILD_ID}
