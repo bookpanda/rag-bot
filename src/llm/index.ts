@@ -1,6 +1,7 @@
 import { OpenAI } from "openai";
 import { ChatCompletionMessageParam } from "openai/resources";
 import { config } from "../config/config";
+import { promptConfig } from "../config/promptConfig";
 import { logger } from "../logger/logger";
 
 class LLM {
@@ -30,9 +31,14 @@ class LLM {
     chatMessages: ChatCompletionMessageParam[]
   ): Promise<string> {
     try {
+      const input: ChatCompletionMessageParam[] = [
+        { role: "system", content: promptConfig.translate },
+        ...chatMessages,
+      ];
+
       const response = await this.openai.chat.completions.create({
         model: this.chatCompletionModel,
-        messages: chatMessages,
+        messages: input,
       });
 
       return response.choices[0].message.content || "";

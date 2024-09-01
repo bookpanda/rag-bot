@@ -20,10 +20,9 @@ const rawPromptconfig: PromptConfig =
   readJSONFile<PromptConfig>("prompt_config.json");
 
 const promptConfigSchema = z.object({
-  translate: z.object({
-    prompt: z.string(),
-    rule: z.array(z.string()),
-  }),
+  translate: z.string(),
 });
 
-export const promptConfig = promptConfigSchema.parse(rawPromptconfig);
+export const promptConfig = promptConfigSchema.parse({
+  translate: `${rawPromptconfig.translate.prompt}\n${rawPromptconfig.translate.rules.join("\n")}`,
+});
