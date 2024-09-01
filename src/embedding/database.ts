@@ -23,13 +23,12 @@ class Database {
   }
 
   async saveEmbedding(embedding: TextEmbedding): Promise<number> {
-    const query =
-      "INSERT INTO embedding (text, source, vector) VALUES ($1, $2, $3) RETURNING id";
+    const query = `INSERT INTO embedding ("text", source, vector) VALUES ($1, $2, $3) RETURNING id`;
     try {
       const response = await this.client.query(query, [
         embedding.text,
         embedding.source,
-        embedding.vector,
+        "[" + embedding.vector.toLocaleString() + "]",
       ]);
 
       return response.rows[0].id;
@@ -44,11 +43,11 @@ class Database {
     limit: number = 1,
     maxDistance: number = 0.8
   ): Promise<TextEmbedding[]> {
-    const query = `WITH dist as (SELECT text, source, vector, vector <=> %s as distance FROM embedding
-    SELECT text, source, vector, distance FROM dist WHERE distance <= %s ORDER BY distance LIMIT %s`;
+    const query = `WITH dist as (SELECT text, source, vector, vector <=> $1 as distance FROM embedding)
+    SELECT text, source, vector, distance FROM dist WHERE distance <= $2 ORDER BY distance LIMIT $3`;
     try {
       const response = await this.client.query<TextEmbedding>(query, [
-        embedding.vector,
+        "[" + embedding.vector.toLocaleString() + "]",
         maxDistance,
         limit,
       ]);
