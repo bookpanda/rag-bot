@@ -31,10 +31,9 @@ class LLM {
     chatMessages: ChatCompletionMessageParam[]
   ): Promise<string> {
     try {
-      const input: ChatCompletionMessageParam[] = [
-        { role: "system", content: promptConfig.translate },
-        ...chatMessages,
-      ];
+      const input: ChatCompletionMessageParam[] = chatMessages;
+      if (config.ENABLE_PROMPT_CONFIG)
+        input.unshift({ role: "system", content: promptConfig.translate });
 
       const response = await this.openai.chat.completions.create({
         model: this.chatCompletionModel,
