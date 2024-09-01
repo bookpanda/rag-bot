@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  rag-bot:
+    build: .
+    container_name: rag-bot
+    restart: unless-stopped
+    environment:
+      - BOT_TOKEN=
+      - BOT_CLIENT_ID=
+      - GUILD_ID=
+      - OPENAI_TOKEN=

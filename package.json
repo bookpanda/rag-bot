@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run ./src/index.js",
-    "build": "bun build --target=bun --outfile=build/server.js ./src"
+    "start": "bun run ./src/index.js",
+    "build": "bun build --target=bun --outfile=build/index.js ./src"
   },
   "devDependencies": {
     "@types/bun": "latest",
