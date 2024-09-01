@@ -1,1 +1,3 @@
-console.log(process.env);
+import { config } from "./config/config";
+
+console.log(config);

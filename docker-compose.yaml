@@ -6,6 +6,7 @@ services:
     container_name: rag-bot
     restart: unless-stopped
     environment:
+      - NODE_ENV=production
       - BOT_TOKEN=${BOT_TOKEN}
       - BOT_CLIENT_ID=${BOT_CLIENT_ID}
       - GUILD_ID=${GUILD_ID}
