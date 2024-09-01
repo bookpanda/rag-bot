@@ -6,7 +6,7 @@ services:
     container_name: rag-bot
     restart: unless-stopped
     environment:
-      - BOT_TOKEN=
-      - BOT_CLIENT_ID=
-      - GUILD_ID=
-      - OPENAI_TOKEN=
+      - BOT_TOKEN=${BOT_TOKEN}
+      - BOT_CLIENT_ID=${BOT_CLIENT_ID}
+      - GUILD_ID=${GUILD_ID}
+      - OPENAI_TOKEN=${OPENAI_TOKEN}
