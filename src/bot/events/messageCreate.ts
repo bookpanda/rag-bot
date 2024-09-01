@@ -1,6 +1,6 @@
 import { Events, Message } from "discord.js";
 // import { mentionHandler } from "../handlers/mention";
-import { logger } from "../logger/logger";
+import { logger } from "../../logger/logger";
 
 export const name = Events.MessageCreate;
 
