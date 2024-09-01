@@ -2,6 +2,11 @@
   "name": "rag-bot",
   "module": "/src/index.ts",
   "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun run ./src/index.js",
+    "build": "bun build --target=bun --outfile=build/server.js ./src"
+  },
   "devDependencies": {
     "@types/bun": "latest",
     "prettier": "^3.3.3",
