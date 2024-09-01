@@ -51,15 +51,3 @@ for (const file of eventFiles) {
 }
 
 client.login(BOT_TOKEN);
-
-// const a = await llm.embed("Hello, world!");
-// console.log(a);
-
-// const b = await llm.completeChat("Hello, world!");
-// console.log(b);
-
-// const c = await saveText("Hello, world!", "a");
-// console.log(c);
-
-// const d = await getRelevantText("hi", 2);
-// console.log(d);
