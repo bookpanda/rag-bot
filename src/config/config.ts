@@ -7,6 +7,12 @@ const configSchema = z.object({
   GUILD_ID: z.string(),
   OPENAI_TOKEN: z.string(),
   DB_URL: z.string(),
+  MSG_EXPIRY_SEC: z.number(),
 });
 
-export const config = configSchema.parse(process.env);
+export const config = configSchema.parse({
+  ...process.env,
+  MSG_EXPIRY_SEC: process.env.MSG_EXPIRY_SEC
+    ? parseInt(process.env.MSG_EXPIRY_SEC)
+    : 604800,
+});

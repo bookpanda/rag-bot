@@ -16,6 +16,8 @@ class Database {
     this.client.query(`
         CREATE TABLE IF NOT EXISTS embedding (
         id SERIAL PRIMARY KEY,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        expires_at TIMESTAMP,
         text TEXT NOT NULL,
         source TEXT NOT NULL,
         vector vector(1536) NOT NULL
@@ -23,12 +25,18 @@ class Database {
   }
 
   async saveEmbedding(embedding: TextEmbedding): Promise<number> {
-    const query = `INSERT INTO embedding ("text", source, vector) VALUES ($1, $2, $3) RETURNING id`;
+    const query = `INSERT INTO embedding ("text", source, vector, expires_at) VALUES ($1, $2, $3, $4) RETURNING id`;
     try {
+      const expiry = new Date(
+        new Date().getTime() + config.MSG_EXPIRY_SEC * 1000
+      );
+      expiry.setDate(expiry.getDate() + 7);
+
       const response = await this.client.query(query, [
         embedding.text,
         embedding.source,
         "[" + embedding.vector.toLocaleString() + "]",
+        expiry,
       ]);
 
       return response.rows[0].id;
@@ -43,7 +51,11 @@ class Database {
     limit: number = 1,
     maxDistance: number = 0.8
   ): Promise<TextEmbedding[]> {
-    const query = `WITH dist as (SELECT text, source, vector, vector <=> $1 as distance FROM embedding)
+    const query = `WITH dist as (
+      SELECT text, source, vector, vector <=> $1 as distance 
+      FROM embedding
+      WHERE expires_at > current_timestamp
+    )
     SELECT text, source, vector, distance FROM dist WHERE distance <= $2 ORDER BY distance LIMIT $3`;
     try {
       const response = await this.client.query<TextEmbedding>(query, [
