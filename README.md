@@ -48,6 +48,8 @@ OPENAI_TOKEN=
 - In `General Information` tab, the `Application ID` is the `BOT_CLIENT_ID` field in `.env`.
 - For `GUILD_ID`, go to your discord server, right click on the server icon and click `Copy ID`.
 
+3. For `OPENAI_TOKEN`, go to the [openai dashboard](https://platform.openai.com/account/api-keys) and create a new API key, you need to top-up some $$ first.
+
 ### Running
 
 1. For the first time, run `bun deploy-commands` to deploy the commands to the discord server.
