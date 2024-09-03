@@ -45,7 +45,7 @@ OPENAI_TOKEN=
 2. Create a new application
 
 - In `Bot` tab, click `Reset Token` to get your bot's access token, it is the `BOT_TOKEN` field in `.env`.
-- In `General Information` tab, the `Application ID` is used later in `.env` as `BOT_CLIENT_ID`.
+- In `General Information` tab, the `Application ID` is the `BOT_CLIENT_ID` field in `.env`.
 - For `GUILD_ID`, go to your discord server, right click on the server icon and click `Copy ID`.
 
 ### Running
