@@ -21,10 +21,35 @@ Making a bot that can **leverage chat context** with **RAG** to generate consist
 
 1. Clone this repo
 2. Copy `.env.template` and paste it in the same directory as `.env` and fill in the values.
-3. Copy `prompt_config.example.json` in `./src/config` and paste it in the same directory as `prompt_config.json` and fill in the values.
+
+```bash
+NODE_ENV=development
+DB_URL=postgresql://root:1234@localhost:5432/db
+MSG_EXPIRY_SEC=604800 # 1 week
+MAX_EMBED_DIST=0.7
+ENABLE_PROMPT_CONFIG=true # whether to use prompt_config.json, false = use default chatgpt tone
+
+BOT_TOKEN=
+BOT_CLIENT_ID=
+GUILD_ID=
+
+OPENAI_TOKEN=
+```
+
+3. Copy `prompt_config.example.json` in `./src/config` and paste it in the same directory as `prompt_config.json` and fill in the desired base prompt (what tone should the bot respond to your messages) or keep it as is.
 4. Download dependencies by `bun i`
+
+### Setting up your discord bot
+
+1. Go to the [discord developer portal](https://discord.com/developers/applications).
+2. Create a new application
+
+- In `Bot` tab, click `Reset Token` to get your bot's access token, it is the `BOT_TOKEN` field in `.env`.
+- In `General Information` tab, the `Application ID` is used later in `.env` as `BOT_CLIENT_ID`.
+- For `GUILD_ID`, go to your discord server, right click on the server icon and click `Copy ID`.
 
 ### Running
 
 1. For the first time, run `bun deploy-commands` to deploy the commands to the discord server.
-2. Run `docker-compose up -d` or `bun dev`
+2. Run `docker-compose up -d` to start vector database.
+3. Run `bun dev` to start local bot.
