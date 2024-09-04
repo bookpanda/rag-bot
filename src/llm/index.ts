@@ -7,7 +7,6 @@ import { logger } from "../logger/logger";
 
 class LLM {
   private openai: OpenAI;
-  private embedModel_ = "text-embedding-3-small";
   private chatCompletionModel_ = "gpt-3.5-turbo-16k";
   private embedModel: OpenAIEmbeddings;
   private chatCompletionModel: ChatOpenAI;
