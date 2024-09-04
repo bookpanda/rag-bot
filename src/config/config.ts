@@ -9,7 +9,7 @@ const configSchema = z.object({
   BOT_TOKEN: z.string(),
   BOT_CLIENT_ID: z.string(),
   GUILD_ID: z.string(),
-  OPENAI_TOKEN: z.string(),
+  OPENAI_API_KEY: z.string(),
 });
 
 export const config = configSchema.parse({

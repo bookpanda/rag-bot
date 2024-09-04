@@ -13,7 +13,7 @@ class LLM {
   private chatCompletionModel: ChatOpenAI;
 
   constructor() {
-    this.openai = new OpenAI({ apiKey: config.OPENAI_TOKEN });
+    this.openai = new OpenAI({ apiKey: config.OPENAI_API_KEY });
     this.chatCompletionModel = new ChatOpenAI({
       model: "gpt-3.5-turbo-16k",
       temperature: 0,
