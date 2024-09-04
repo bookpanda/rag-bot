@@ -1,3 +1,4 @@
+import { ChatOpenAI, OpenAIEmbeddings } from "@langchain/openai";
 import { OpenAI } from "openai";
 import { ChatCompletionMessageParam } from "openai/resources";
 import { config } from "../config/config";
@@ -6,21 +7,27 @@ import { logger } from "../logger/logger";
 
 class LLM {
   private openai: OpenAI;
-  private embedModel = "text-embedding-3-small";
-  private chatCompletionModel = "gpt-3.5-turbo-16k";
+  private embedModel_ = "text-embedding-3-small";
+  private chatCompletionModel_ = "gpt-3.5-turbo-16k";
+  private embedModel: OpenAIEmbeddings;
+  private chatCompletionModel: ChatOpenAI;
 
   constructor() {
     this.openai = new OpenAI({ apiKey: config.OPENAI_TOKEN });
+    this.chatCompletionModel = new ChatOpenAI({
+      model: "gpt-3.5-turbo-16k",
+      temperature: 0,
+    });
+    this.embedModel = new OpenAIEmbeddings({
+      model: "text-embedding-3-small",
+    });
   }
 
   async embed(text: string): Promise<number[]> {
     try {
-      const response = await this.openai.embeddings.create({
-        model: this.embedModel,
-        input: text,
-      });
+      const res = await this.embedModel.embedQuery(text);
 
-      return response.data[0].embedding;
+      return res;
     } catch (error) {
       logger.error("Error embedding text:", error);
       throw new Error("Failed to embed text");
@@ -36,7 +43,7 @@ class LLM {
         input.unshift({ role: "system", content: promptConfig.translate });
 
       const response = await this.openai.chat.completions.create({
-        model: this.chatCompletionModel,
+        model: this.chatCompletionModel_,
         messages: input,
       });
 
